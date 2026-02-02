@@ -1,0 +1,2 @@
+graft semantic_iot
+global-exclude *.py[cod]
