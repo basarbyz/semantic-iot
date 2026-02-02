@@ -1,6 +1,6 @@
 from pathlib import Path
 import textwrap
-
+import semantic_iot
 
 class PromptsLoader:
     """
@@ -10,19 +10,26 @@ class PromptsLoader:
     # LOAD FILES =====================================================================
     def __init__(self):
 
-        root_path = Path(__file__).parent.parent
+        package_root = Path(semantic_iot.__file__).parent
+        # Define the dynamic path to the templates folder
+        templates_dir = package_root / "templates"
+
         self.template_paths = {
-            # CHANGED: Removed "LLM_eval/" because we are already inside the package
-            "rdf": str(Path(root_path, "templates/rdf_template.ttl")),
-            "RML": str(Path(root_path, "templates/rml_template.ttl")),
-            "config": str(Path(root_path, "templates/platform_config_template.json")),
-            "context": str(Path(root_path, "templates/context_template.json")),
+            "rdf": templates_dir / "rdf_template.ttl",
+            "RML": templates_dir / "rml_template.ttl",
+            "config": templates_dir / "platform_config_template.json",
+            "context": templates_dir / "context_template.json",
         }
+
         self.templates = {}
         for key, path in self.template_paths.items():
-            with open(path, "r") as f: 
-                self.templates[key] = f.read()
+            if not path.exists():
+                raise FileNotFoundError(
+                    f"Critical Error: Template file not found at {path}. \n"
+                    f"Make sure the 'templates' folder is included in your package.")
 
+            with open(path, "r", encoding='utf-8') as f:
+                self.templates[key] = f.read()
         # IN-BETWEEN VARIABLES ================================================================
 
         self.ontology_path = None
