@@ -1,6 +1,7 @@
 from pathlib import Path
 import textwrap
 import semantic_iot
+import os
 
 class PromptsLoader:
     """
@@ -10,9 +11,9 @@ class PromptsLoader:
     # LOAD FILES =====================================================================
     def __init__(self):
 
-        package_root = Path(semantic_iot.__file__).parent
+        custom_path = os.getenv("templates")
         # Define the dynamic path to the templates folder
-        templates_dir = package_root / "templates"
+        templates_dir = Path(custom_path)
 
         self.template_paths = {
             "rdf": templates_dir / "rdf_template.ttl",
