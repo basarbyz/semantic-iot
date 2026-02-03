@@ -40,7 +40,9 @@ setup(
     include_package_data=True,  # Include non-Python files specified in MANIFEST.in
     package_data={
         # Include any data files in the 'semantic_iot' package
-        'semantic_iot': ['*.ttl.jinja2'],
+        'semantic_iot': [
+            '*.ttl',
+            '*.json'],
     },
     install_requires=read_requirements(),
     classifiers=[
